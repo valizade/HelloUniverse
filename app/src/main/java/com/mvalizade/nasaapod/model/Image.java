@@ -30,6 +30,12 @@ public class Image {
   @Expose
   private String url;
 
+  public Image(String title, String date, String url) {
+    this.date = date;
+    this.title = title;
+    this.url = url;
+  }
+
   public String getCopyright() {
     return copyright;
   }
