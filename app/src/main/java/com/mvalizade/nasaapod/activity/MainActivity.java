@@ -1,6 +1,7 @@
 package com.mvalizade.nasaapod.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     Call<List<Image>> call = apiInterface.getImagesList(Base.API_KEY, "2017-07-08", "2017-07-10");
     call.enqueue(new Callback<List<Image>>() {
       @Override
-      public void onResponse(Call<List<Image>> call, Response<List<Image>> response) {
+      public void onResponse(@NonNull Call<List<Image>> call, @NonNull Response<List<Image>> response) {
         if(response.isSuccessful()) {
           List<Image> images = response.body();
           for(Image image:images){
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
       }
 
       @Override
-      public void onFailure(Call<List<Image>> call, Throwable t) {
+      public void onFailure(@NonNull Call<List<Image>> call, @NonNull Throwable t) {
         Log.i(Base.APP_TAG, "an error happend");
         Log.e(Base.APP_TAG, t.toString());
       }
