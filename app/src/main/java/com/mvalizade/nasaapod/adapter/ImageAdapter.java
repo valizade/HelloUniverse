@@ -2,6 +2,7 @@ package com.mvalizade.nasaapod.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mvalizade.nasaapod.R;
+import com.mvalizade.nasaapod.framework.application.Base;
 import com.mvalizade.nasaapod.model.Image;
 
 import java.util.List;
@@ -49,9 +51,23 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     Image image = images.get(position);
     holder.txtTitle.setText(image.getTitle());
     holder.txtDate.setText(image.getDate());
-    Glide.with(context)
-      .load(image.getUrl())
-      .into(holder.imgThumbnail);
+
+    if(image.getMediaType().equals("image")) {
+      Log.i(Base.APP_TAG, "its image $$$$$$$$$$$$$$$$$$$$$$");
+      Glide.with(context)
+        .load(image.getUrl())
+        .into(holder.imgThumbnail);
+    } else if(image.getMediaType().equals("video")) {
+      Log.i(Base.APP_TAG, "its video---------------------------------------------");
+      /*Glide
+        .with(context)
+        .asBitmap()
+        .load(Uri.fromFile(new File(image.getUrl())))
+        .into(holder.imgThumbnail);*/
+
+
+    }
+
   }
 
   @Override

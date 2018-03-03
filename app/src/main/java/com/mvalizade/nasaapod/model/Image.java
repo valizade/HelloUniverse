@@ -30,10 +30,11 @@ public class Image {
   @Expose
   private String url;
 
-  public Image(String title, String date, String url) {
+  public Image(String title, String date, String url, String mediaType) {
     this.date = date;
     this.title = title;
     this.url = url;
+    this.mediaType = mediaType;
   }
 
   public String getCopyright() {
