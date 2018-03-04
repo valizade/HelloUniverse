@@ -15,4 +15,9 @@ public interface APIInterface {
     @Query("api_key") String apiKey,
     @Query("start_date") String startDate,
     @Query("end_date") String endDate);
+
+  @GET("planetary/apod")
+  Call<List<Image>> getRandomImage(
+    @Query("api_key") String apiKey,
+    @Query("count") int count);
 }

@@ -12,9 +12,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.mvalizade.nasaapod.R;
 import com.mvalizade.nasaapod.adapter.ImageAdapter;
-import com.mvalizade.nasaapod.framework.activity.MActivity;
+import com.mvalizade.nasaapod.framework.activity.MAppCompatActivity;
 import com.mvalizade.nasaapod.framework.application.Base;
 import com.mvalizade.nasaapod.model.Image;
 import com.mvalizade.nasaapod.webservice.APIClient;
@@ -28,14 +29,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends MActivity {
+public class MainActivity extends MAppCompatActivity {
   
-  RecyclerView recyclerView;
-  ImageAdapter adapter;
-  List<Image> imageList;
-  ProgressBar progressBar;
-
-  String currentDate;
+  private RecyclerView recyclerView;
+  private ImageAdapter adapter;
+  private List<Image> imageList;
+  private ProgressBar progressBar;
+  private Call<List<Image>> call;
+  private APIInterface apiInterface;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +48,11 @@ public class MainActivity extends MActivity {
 
     handleUi(Base.STATE_IN_PROGRESS);
 
-    //Log.i(Base.APP_TAG, "##################### time is: " + Base.getPastDate(30));
-
     //initialize appbar
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     initCollapsingToolbar(getString(R.string.app_name), R.id.collapsing_toolbar, R.id.appbar);
-    try {
-      Glide.with(this).load(R.drawable.ic_launcher_background).into((ImageView) findViewById(R.id.backdrop));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    getImage(Base.API_STATE_RANDOM_IMAGE);
 
     //initialize recyclerview
     imageList = new ArrayList<>();
@@ -68,30 +63,29 @@ public class MainActivity extends MActivity {
     recyclerView.setItemAnimator(new DefaultItemAnimator());
     recyclerView.setAdapter(adapter);
 
-    initApi();
+    getImage(Base.API_STATE_LIST_IMAGE);
 
   }
 
-
-  private void initApi() {
-    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-    Call<List<Image>> call = apiInterface.getImagesList(Base.API_KEY, Base.getDate(15), Base.getDate(0));
+  private void getImage(final int state) {
+    apiInterface = APIClient.getClient().create(APIInterface.class);
+    setCall(state);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull Call<List<Image>> call, @NonNull Response<List<Image>> response) {
         if(response.isSuccessful()) {
           List<Image> images = response.body();
-
-          Collections.reverse(images);
-
-          for(Image image:images){
-            Log.i(Base.APP_TAG, "type : " + image.getMediaType());
-            if( image.getMediaType().equals("image")) {
-              imageList.add(new Image(image.getTitle(), image.getDate(), image.getUrl(), image.getMediaType()));
-            }
+          if(state == Base.API_STATE_RANDOM_IMAGE) {
+            Glide
+              .with(MainActivity.this)
+              .load(images.get(0).getUrl())
+              .transition(new DrawableTransitionOptions().crossFade())
+              .thumbnail(Glide.with(MainActivity.this).load(R.drawable.loading4))
+              .into((ImageView) findViewById(R.id.img_banner));
+          } else {
+            updateRecyclerView(images);
+            handleUi(Base.STATE_PROGRESS_DONE);
           }
-          adapter.notifyDataSetChanged();
-          handleUi(Base.STATE_PROGRESS_DONE);
         } else {
           Log.i(Base.APP_TAG, "get response but an error happend");
           handleUi(Base.STATE_ERROR);
@@ -105,6 +99,24 @@ public class MainActivity extends MActivity {
         handleUi(Base.STATE_ERROR);
       }
     });
+  }
+
+  private void setCall(int state) {
+    if(state == Base.API_STATE_RANDOM_IMAGE) {
+      call = apiInterface.getRandomImage(Base.API_KEY_DEMO, 1);
+    } else {
+      call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(30), Base.getDate(0));
+    }
+  }
+
+  private void updateRecyclerView(List<Image> images) {
+    //this reverse the list, becouse the list is ascending but we want decsending.
+    Collections.reverse(images);
+
+    for(Image image:images){
+      imageList.add(new Image(image.getTitle(), image.getDate(), image.getUrl(), image.getMediaType()));
+    }
+    adapter.notifyDataSetChanged();
   }
 
   //handle ui with visibility of progressBar and recyclerView

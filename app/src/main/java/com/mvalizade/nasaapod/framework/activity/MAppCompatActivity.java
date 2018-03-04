@@ -11,7 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 @SuppressLint("Registered")
-public class MActivity extends AppCompatActivity {
+public class MAppCompatActivity extends AppCompatActivity {
 
   /**
    * Initializing collapsing toolbar

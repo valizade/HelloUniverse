@@ -2,7 +2,6 @@ package com.mvalizade.nasaapod.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
   private Context context;
   public List<Image> images;
+  private Image image;
 
   public ImageAdapter(Context context, List<Image> images) {
     this.context = context;
@@ -29,13 +29,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
   public class MyViewHolder extends RecyclerView.ViewHolder {
 
     public TextView txtTitle, txtDate;
-    public ImageView imgThumbnail;
+    public ImageView imgThumbnail, imgPlay;
 
     public MyViewHolder(View itemView) {
       super(itemView);
       txtTitle = itemView.findViewById(R.id.txt_title);
       txtDate = itemView.findViewById(R.id.txt_date);
       imgThumbnail = itemView.findViewById(R.id.img_thumbnail);
+      imgPlay = itemView.findViewById(R.id.img_play);
     }
   }
 
@@ -48,26 +49,28 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
   @Override
   public void onBindViewHolder(ImageAdapter.MyViewHolder holder, int position) {
-    Image image = images.get(position);
+    image = images.get(position);
     holder.txtTitle.setText(image.getTitle());
     holder.txtDate.setText(image.getDate());
+    Glide
+      .with(context)
+      .load(getImageThumbnail(holder))
+      .into(holder.imgThumbnail);
+  }
 
-    if(image.getMediaType().equals("image")) {
-      Log.i(Base.APP_TAG, "its image $$$$$$$$$$$$$$$$$$$$$$");
-      Glide.with(context)
-        .load(image.getUrl())
-        .into(holder.imgThumbnail);
-    } else if(image.getMediaType().equals("video")) {
-      Log.i(Base.APP_TAG, "its video---------------------------------------------");
-      /*Glide
-        .with(context)
-        .asBitmap()
-        .load(Uri.fromFile(new File(image.getUrl())))
-        .into(holder.imgThumbnail);*/
-
-
+  //get image and video thumbnail and if its a video, add a image (play picture) to thumbnail.
+  public String getImageThumbnail(ImageAdapter.MyViewHolder holder) {
+    String url = image.getUrl();
+    switch (image.getMediaType()) {
+      case "video":
+        holder.imgPlay.setVisibility(View.VISIBLE);
+        return ("http://img.youtube.com/vi/"+ Base.extractYoutubeId(url) +"/0.jpg");
+      case "image":
+        holder.imgPlay.setVisibility(View.GONE);
+        return url;
+      default:
+        return "";
     }
-
   }
 
   @Override
