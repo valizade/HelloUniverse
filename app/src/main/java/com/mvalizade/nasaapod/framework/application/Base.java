@@ -40,4 +40,8 @@ public class Base extends Application {
     return param2[0];
   }
 
+  public static boolean isAYoutubVideo(String url) {
+    return url.indexOf("youtube") > 0;
+  }
+
 }

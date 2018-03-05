@@ -63,7 +63,7 @@ public class MainActivity extends MAppCompatActivity {
     recyclerView.setItemAnimator(new DefaultItemAnimator());
     recyclerView.setAdapter(adapter);
 
-    getImage(Base.API_STATE_LIST_IMAGE);
+    //getImage(Base.API_STATE_LIST_IMAGE);
 
   }
 
@@ -76,12 +76,8 @@ public class MainActivity extends MAppCompatActivity {
         if(response.isSuccessful()) {
           List<Image> images = response.body();
           if(state == Base.API_STATE_RANDOM_IMAGE) {
-            Glide
-              .with(MainActivity.this)
-              .load(images.get(0).getUrl())
-              .transition(new DrawableTransitionOptions().crossFade())
-              .thumbnail(Glide.with(MainActivity.this).load(R.drawable.loading4))
-              .into((ImageView) findViewById(R.id.img_banner));
+            setHeaderImage(images);
+            getImage(Base.API_STATE_LIST_IMAGE);
           } else {
             updateRecyclerView(images);
             handleUi(Base.STATE_PROGRESS_DONE);
@@ -101,11 +97,20 @@ public class MainActivity extends MAppCompatActivity {
     });
   }
 
+  private void setHeaderImage(List<Image> images) {
+    Glide
+      .with(MainActivity.this)
+      .load(images.get(0).getUrl())
+      .transition(new DrawableTransitionOptions().crossFade())
+      .thumbnail(Glide.with(MainActivity.this).load(R.drawable.loading4))
+      .into((ImageView) findViewById(R.id.img_banner));
+  }
+
   private void setCall(int state) {
     if(state == Base.API_STATE_RANDOM_IMAGE) {
-      call = apiInterface.getRandomImage(Base.API_KEY_DEMO, 1);
+      call = apiInterface.getRandomImage(Base.API_KEY, 1);
     } else {
-      call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(30), Base.getDate(0));
+      call = apiInterface.getImagesList(Base.API_KEY, Base.getDate(30), Base.getDate(0));
     }
   }
 
@@ -114,7 +119,9 @@ public class MainActivity extends MAppCompatActivity {
     Collections.reverse(images);
 
     for(Image image:images){
-      imageList.add(new Image(image.getTitle(), image.getDate(), image.getUrl(), image.getMediaType()));
+      if(Base.isAYoutubVideo(image.getUrl()) || image.getMediaType().equals("image")) {
+        imageList.add(new Image(image.getTitle(), image.getDate(), image.getUrl(), image.getMediaType()));
+      }
     }
     adapter.notifyDataSetChanged();
   }
