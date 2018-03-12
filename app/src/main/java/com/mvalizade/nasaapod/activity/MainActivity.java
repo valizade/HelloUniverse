@@ -39,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends MAppCompatActivity {
-  
+
   private RecyclerView recyclerView;
   private ImageAdapter adapter;
   private List<Image> imageList;
@@ -80,16 +80,12 @@ public class MainActivity extends MAppCompatActivity {
     //initialize recyclerview
     imageList = new ArrayList<>();
     adapter = new ImageAdapter(this, imageList);
-    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-    recyclerView.setLayoutManager(mLayoutManager);
+    //RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+    GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+    recyclerView.setLayoutManager(gridLayoutManager);
     recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
     recyclerView.setItemAnimator(new DefaultItemAnimator());
     recyclerView.setAdapter(adapter);
-
-    //getImage(Base.API_STATE_LIST_IMAGE);
-
-
-
 
 
     drawer = findViewById(R.id.drawer_layout);
@@ -156,7 +152,7 @@ public class MainActivity extends MAppCompatActivity {
     if(state == Base.API_STATE_RANDOM_IMAGE) {
       call = apiInterface.getRandomImage(Base.API_KEY, 1);
     } else {
-      call = apiInterface.getImagesList(Base.API_KEY, Base.getDate(30), Base.getDate(0));
+      call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(15), Base.getDate(0));
     }
   }
 
@@ -295,5 +291,6 @@ public class MainActivity extends MAppCompatActivity {
     }
     super.onBackPressed();
   }
+
 }
 

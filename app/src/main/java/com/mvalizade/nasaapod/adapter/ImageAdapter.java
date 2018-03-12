@@ -64,7 +64,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
     switch (image.getMediaType()) {
       case "video":
         holder.imgPlay.setVisibility(View.VISIBLE);
-        return ("http://img.youtube.com/vi/"+ Base.extractYoutubeId(url) +"/0.jpg");
+        return ("http://img.youtube.com/vi/" + Base.extractYoutubeId(url) + "/0.jpg");
       case "image":
         holder.imgPlay.setVisibility(View.GONE);
         return url;
