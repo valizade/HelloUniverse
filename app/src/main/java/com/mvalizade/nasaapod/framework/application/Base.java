@@ -2,6 +2,7 @@ package com.mvalizade.nasaapod.framework.application;
 
 import android.app.Application;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,13 +25,28 @@ public class Base extends Application {
   }
 
   //retrun date. if pastDays=0 then return current date else return pastDays ago date.
-  public static String getDate(int pastDays) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Calendar cal = GregorianCalendar.getInstance();
-    cal.setTime(new Date());
-    cal.add(Calendar.DAY_OF_YEAR, -pastDays);
-    Date date = cal.getTime();
-    return dateFormat.format(date);
+  public static String getDate(int pastDays, String lastDate) {
+    if(lastDate != null && !lastDate.equals("") && !lastDate.equals(null)){
+      try {
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      Calendar cal = GregorianCalendar.getInstance();
+      //cal.setTime(new Date());
+      cal.setTime(dateFormat.parse(lastDate));
+      cal.add(Calendar.DAY_OF_YEAR, -pastDays);
+      Date date = cal.getTime();
+      return dateFormat.format(date);
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    } else {
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      Calendar cal = GregorianCalendar.getInstance();
+      cal.setTime(new Date());
+      cal.add(Calendar.DAY_OF_YEAR, -pastDays);
+      Date date = cal.getTime();
+      return dateFormat.format(date);
+    }
+    return null;
   }
 
   //this function get a youtube url and return video id of this url

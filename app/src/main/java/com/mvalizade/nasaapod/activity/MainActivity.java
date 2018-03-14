@@ -152,7 +152,7 @@ public class MainActivity extends MAppCompatActivity {
     if(state == Base.API_STATE_RANDOM_IMAGE) {
       call = apiInterface.getRandomImage(Base.API_KEY, 1);
     } else {
-      call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(15), Base.getDate(0));
+      //call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(15), Base.getDate(0));
     }
   }
 
@@ -169,7 +169,7 @@ public class MainActivity extends MAppCompatActivity {
     adapter.notifyDataSetChanged();
   }
 
-  //handle ui with visibility of progressBar and recyclerView
+  //handle setProgressbarVisibility with visibility of progressBar and recyclerView
   private void handleUi(int state) {
     switch (state) {
       case Base.STATE_IN_PROGRESS:
