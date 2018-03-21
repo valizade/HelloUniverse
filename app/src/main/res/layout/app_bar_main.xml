@@ -47,7 +47,7 @@
           android:layout_marginEnd="8dp"
           android:layout_marginStart="8dp"
           android:layout_marginTop="8dp"
-          android:gravity="start|center_horizontal"
+          android:gravity="right"
           android:orientation="vertical"
           app:layout_constraintBottom_toBottomOf="@id/img_banner"
           app:layout_constraintEnd_toEndOf="@id/img_banner"
@@ -67,9 +67,20 @@
             android:id="@+id/txt_banner_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="4dp"
             android:background="#ccffffff"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/backdrop_subtitle"/>
+            android:gravity="right"
+            android:paddingBottom="2dp"
+            android:paddingEnd="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="@dimen/header_date"
+            android:textStyle="bold"
+            android:visibility="gone"/>
 
         </LinearLayout>
       </android.support.constraint.ConstraintLayout>

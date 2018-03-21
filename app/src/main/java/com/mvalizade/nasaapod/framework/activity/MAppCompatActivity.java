@@ -1,8 +1,13 @@
 package com.mvalizade.nasaapod.framework.activity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -89,6 +94,27 @@ public class MAppCompatActivity extends AppCompatActivity {
   public int dpToPx(int dp) {
     Resources r = getResources();
     return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+  }
+
+  public void openSetting() {
+    Intent intent = new Intent();
+    intent.setComponent(new ComponentName("com.android.settings","com.android.settings.Settings$DataUsageSummaryActivity"));
+    startActivity(intent);
+  }
+
+  public boolean isConnectedToInternet(){
+    ConnectivityManager connectivity = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    if (connectivity != null)
+    {
+      NetworkInfo[] info = connectivity.getAllNetworkInfo();
+      if (info != null)
+        for (NetworkInfo anInfo : info)
+          if (anInfo.getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+          }
+
+    }
+    return false;
   }
 
 }

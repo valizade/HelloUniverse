@@ -53,6 +53,7 @@
         android:layout_below="@id/txt_title"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
+        android:gravity="right"
         android:paddingBottom="@dimen/songs_count_padding_bottom"
         android:paddingLeft="@dimen/album_title_padding"
         android:paddingRight="@dimen/album_title_padding"

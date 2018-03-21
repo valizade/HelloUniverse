@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -43,7 +42,7 @@ public class MainActivity extends MAppCompatActivity {
   private RecyclerView recyclerView;
   private ImageAdapter adapter;
   private List<Image> imageList;
-  private ProgressBar progressBar;
+  //private ProgressBar progressBar;
   private Call<List<Image>> call;
   private APIInterface apiInterface;
 
@@ -66,7 +65,7 @@ public class MainActivity extends MAppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    progressBar = findViewById(R.id.progressBar);
+    //progressBar = findViewById(R.id.progressBar);
     recyclerView = findViewById(R.id.recycler_view);
 
     handleUi(Base.STATE_IN_PROGRESS);
@@ -173,17 +172,17 @@ public class MainActivity extends MAppCompatActivity {
   private void handleUi(int state) {
     switch (state) {
       case Base.STATE_IN_PROGRESS:
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
         break;
 
       case Base.STATE_PROGRESS_DONE:
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
         break;
 
       case Base.STATE_ERROR:
-        progressBar.setVisibility(View.GONE);
+        //progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         break;
     }
