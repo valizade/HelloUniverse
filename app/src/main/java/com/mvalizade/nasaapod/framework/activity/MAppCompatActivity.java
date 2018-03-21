@@ -1,9 +1,7 @@
 package com.mvalizade.nasaapod.framework.activity;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
@@ -23,7 +21,6 @@ public class MAppCompatActivity extends AppCompatActivity {
    * Will show and hide the toolbar title on scroll
    */
   public void initCollapsingToolbar(final String toolbarTitle, int colapsingToolbar, int appBar) {
-
     final CollapsingToolbarLayout collapsingToolbar = findViewById(colapsingToolbar);
     collapsingToolbar.setTitle(" ");
     AppBarLayout appBarLayout = findViewById(appBar);
@@ -94,12 +91,6 @@ public class MAppCompatActivity extends AppCompatActivity {
   public int dpToPx(int dp) {
     Resources r = getResources();
     return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-  }
-
-  public void openSetting() {
-    Intent intent = new Intent();
-    intent.setComponent(new ComponentName("com.android.settings","com.android.settings.Settings$DataUsageSummaryActivity"));
-    startActivity(intent);
   }
 
   public boolean isConnectedToInternet(){
