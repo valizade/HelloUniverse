@@ -2,12 +2,15 @@ package com.mvalizade.nasaapod.framework.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -106,6 +109,27 @@ public class MAppCompatActivity extends AppCompatActivity {
 
     }
     return false;
+  }
+
+  public void showAlertDialog(String title, String message, String btnPositive) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(title)
+      .setMessage(message)
+      .setPositiveButton(btnPositive, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+          dialog.cancel();
+          exit();
+        }
+      })
+      .show();
+  }
+
+  public void exit() {
+    Intent intent = new Intent(Intent.ACTION_MAIN);
+    intent.addCategory(Intent.CATEGORY_HOME);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+    System.exit(1);
   }
 
 }

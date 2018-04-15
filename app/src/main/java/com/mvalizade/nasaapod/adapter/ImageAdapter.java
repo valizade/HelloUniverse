@@ -33,7 +33,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
     public MyViewHolder(View itemView) {
       super(itemView);
-      txtTitle = itemView.findViewById(R.id.txt_title);
+      txtTitle = itemView.findViewById(R.id.txt_splash_title);
       txtDate = itemView.findViewById(R.id.txt_date);
       imgThumbnail = itemView.findViewById(R.id.img_thumbnail);
       imgPlay = itemView.findViewById(R.id.img_play);

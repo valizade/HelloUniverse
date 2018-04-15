@@ -32,7 +32,7 @@
         card_view:layout_constraintTop_toTopOf="parent"/>
 
       <TextView
-        android:id="@+id/txt_title"
+        android:id="@+id/txt_splash_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/img_thumbnail"
@@ -50,7 +50,7 @@
         android:id="@+id/txt_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_title"
+        android:layout_below="@id/txt_splash_title"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:gravity="right"
@@ -61,7 +61,7 @@
         card_view:layout_constraintBottom_toBottomOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@+id/txt_title"/>
+        card_view:layout_constraintTop_toBottomOf="@+id/txt_splash_title"/>
 
       <ImageView
         android:id="@+id/img_play"

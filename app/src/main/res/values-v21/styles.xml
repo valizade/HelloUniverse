@@ -10,6 +10,9 @@
     <item name="android:windowTranslucentStatus">true</item>
     <item name="android:windowTranslucentNavigation">true</item>
 
+    <item name="android:windowEnterTransition">@transition/default_window_fade</item>
+    <item name="android:windowExitTransition">@transition/default_window_fade</item>
+
     <!--<item name="android:statusBarColor">@color/colorPrimaryDark</item>
     <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
   </style>
