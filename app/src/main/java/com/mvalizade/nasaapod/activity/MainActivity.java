@@ -1,11 +1,20 @@
 package com.mvalizade.nasaapod.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,244 +26,338 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.mvalizade.nasaapod.R;
 import com.mvalizade.nasaapod.adapter.ImageAdapter;
 import com.mvalizade.nasaapod.framework.activity.MAppCompatActivity;
 import com.mvalizade.nasaapod.framework.application.Base;
-import com.mvalizade.nasaapod.framework.transform.CircleTransform;
+import com.mvalizade.nasaapod.framework.listener.ImageItemClickListener;
+import com.mvalizade.nasaapod.framework.listener.OnLoadMoreListener;
+import com.mvalizade.nasaapod.framework.listener.OnRefreshListener;
 import com.mvalizade.nasaapod.model.Image;
-import com.mvalizade.nasaapod.webservice.APIClient;
-import com.mvalizade.nasaapod.webservice.APIInterface;
+import com.mvalizade.nasaapod.webservice.OnResponseListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-public class MainActivity extends MAppCompatActivity {
+public class MainActivity extends MAppCompatActivity implements ImageItemClickListener {
 
-  private RecyclerView recyclerView;
+  @BindView(R.id.recycler_view) RecyclerView recyclerView;
+  @BindView(R.id.txt_banner_date) TextView txtBannerDate;
+
+  public static final String EXTRA_IMAGE_ITEM = "image_url";
+  public static final String EXTRA_IMAGE_TRANSITION_NAME = "image_transition_name";
+  private static final String urlNavHeaderBg = "http://pazema.com/wp-content/uploads/2017/04/telescopskystars.jpg";
+
+  private List<Image> imagesList;
+  private List<Image> images;
+  public boolean isLoadingFinished = true;
+  public boolean isFirstLoad = true;
+  private boolean isErrorHappend = false;
+  private boolean isFirstOnResumed = true;
+  private String lastDate;
+  private int loadingViewIndex;
   private ImageAdapter adapter;
-  private List<Image> imageList;
-  //private ProgressBar progressBar;
-  private Call<List<Image>> call;
-  private APIInterface apiInterface;
-
-
-
-
+  private RecyclerView.LayoutManager layoutManager;
   private NavigationView navigationView;
   private DrawerLayout drawer;
   private View navHeader;
-  private ImageView imgNavHeaderBg, imgProfile;
-  private TextView txtName, txtWebsite;
-
-  // urls to load navigation header background image
-  // and profile image
-  private static final String urlNavHeaderBg = "https://api.androidhive.info/images/nav-menu-header-bg.jpg";
-  private static final String urlProfileImg = "https://lh3.googleusercontent.com/eCtE_G34M9ygdkmOpYvCag1vBARCmZwnVS6rS5t4JLzJ6QgQSBquM0nuTsCpLhYbKljoyS-txg";
+  private ImageView imgNavHeaderBg;
+  private TextView txtName, txtDescription;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    ButterKnife.bind(this);
 
-    //progressBar = findViewById(R.id.progressBar);
-    recyclerView = findViewById(R.id.recycler_view);
+    lastDate = Base.getTodayDate();
 
-    handleUi(Base.STATE_IN_PROGRESS);
-
-    //initialize appbar
     Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     initCollapsingToolbar(getString(R.string.app_name), R.id.collapsing_toolbar, R.id.appbar);
-    getImage(Base.API_STATE_RANDOM_IMAGE);
 
-    //initialize recyclerview
-    imageList = new ArrayList<>();
-    adapter = new ImageAdapter(this, imageList);
-    //RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-    GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-    recyclerView.setLayoutManager(gridLayoutManager);
-    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-    recyclerView.setItemAnimator(new DefaultItemAnimator());
-    recyclerView.setAdapter(adapter);
+    initRecyclerView();
 
+    initNavMenu();
+  }
 
+  public void initNavMenu() {
     drawer = findViewById(R.id.drawer_layout);
     navigationView = findViewById(R.id.nav_view);
-
-    // Navigation view header
     navHeader = navigationView.getHeaderView(0);
     txtName = navHeader.findViewById(R.id.name);
-    txtWebsite = navHeader.findViewById(R.id.website);
+    txtDescription = navHeader.findViewById(R.id.website);
     imgNavHeaderBg = navHeader.findViewById(R.id.img_header_bg);
-    imgProfile = navHeader.findViewById(R.id.img_profile);
-
-    // load nav menu header data
     loadNavHeader();
-
-    // initializing navigation menu
     setUpNavigationView();
   }
 
-  private void getImage(final int state) {
-    apiInterface = APIClient.getClient().create(APIInterface.class);
-    setCall(state);
-    call.enqueue(new Callback<List<Image>>() {
+  private void setLoadingFinished(final int state) {
+    new Handler().postDelayed(new Runnable() {
       @Override
-      public void onResponse(@NonNull Call<List<Image>> call, @NonNull Response<List<Image>> response) {
-        if(response.isSuccessful()) {
-          List<Image> images = response.body();
-          if(state == Base.API_STATE_RANDOM_IMAGE) {
-            if(images.get(0).getMediaType().equals("image")) {
-              setHeaderImage(images);
-              getImage(Base.API_STATE_LIST_IMAGE);
-            } else {
-              getImage(Base.API_STATE_RANDOM_IMAGE);
-            }
-          } else {
-            updateRecyclerView(images);
-            handleUi(Base.STATE_PROGRESS_DONE);
-          }
-        } else {
-          Log.i(Base.APP_TAG, "get response but an error happend");
-          handleUi(Base.STATE_ERROR);
+      public void run() {
+        switch(state) {
+          case Base.STATE_GET_IMAGES_FAILED:
+            setErrorState(true);
+            showAlertDialog(Base.STATE_CONNECTION_ERROR_LIST, "ERROR", "No found connection! please check your connetion and try agian.",
+              "open setting", "cancel");
+            break;
+          case Base.STATE_GET_IMAGES_SUCCESSFUL:
+            removeLastItem();
+            break;
         }
+        adapter.setLoaded();
+        isLoadingFinished = true;
+        adapter.notifyDataSetChanged();
+      }
+    }, Base.HANDLER_DELAY);
+  }
+
+  public void getRandomImage() {
+    com.mvalizade.nasaapod.webservice.Call.getRandomImage(new OnResponseListener() {
+      @Override
+      public <T> void onResponse(T object) {
+        super.onResponse(object);
+        setHeaderImage((Image) object);
+        getImagesList();
       }
 
       @Override
-      public void onFailure(@NonNull Call<List<Image>> call, @NonNull Throwable t) {
+      public <T> void onFailure(T object) {
+        super.onFailure(object);
         Log.i(Base.APP_TAG, "an error happend");
-        Log.e(Base.APP_TAG, t.toString());
-        handleUi(Base.STATE_ERROR);
+        Log.e(Base.APP_TAG, object.toString());
+        if(object instanceof IOException) {
+          showAlertDialog(Base.STATE_CONNECTION_ERROR_HEADER, "ERROR", "No found connection! please check your connetion and try agian.",
+            "open setting", "cancel");
+        }
       }
     });
   }
 
-  private void setHeaderImage(List<Image> images) {
-    Glide
-      .with(MainActivity.this)
-      .load(images.get(0).getUrl())
+  public void getImagesList() {
+    addLoadingToRecyclerview();
+    com.mvalizade.nasaapod.webservice.Call.getImagesList(new OnResponseListener() {
+      @Override
+      public <T> void onResponse(T object) {
+        super.onResponse(object);
+        images = (List<Image>) object;
+        updateRecyclerView();
+        setLoadingFinished(Base.STATE_GET_IMAGES_SUCCESSFUL);
+        isFirstLoad = false;
+      }
+
+      @Override
+      public <T> void onFailure(T object) {
+        super.onFailure(object);
+        Log.e(Base.APP_TAG, object.toString());
+        if(object instanceof IOException) {
+          setLoadingFinished(Base.STATE_GET_IMAGES_FAILED);
+        }
+      }
+    }, lastDate);
+  }
+
+  private void initRecyclerView() {
+    imagesList = new ArrayList<>();
+    layoutManager = new GridLayoutManager(this, 2);
+    recyclerView.setLayoutManager(layoutManager);
+    adapter = new ImageAdapter(this, imagesList, recyclerView, this);
+    recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+    recyclerView.setItemAnimator(new DefaultItemAnimator());
+    adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+      @Override
+      public void onLoadMore() {
+        if(isLoadingFinished && !isFirstLoad && !isErrorHappend) {
+          isLoadingFinished = false;
+          getImagesList();
+        }
+      }
+    });
+    adapter.setOnRefreshListener(new OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        if(!isFirstLoad && isErrorHappend) {
+          isLoadingFinished = false;
+          setErrorState(false);
+          removeLastItem();
+          getImagesList();
+        }
+      }
+    });
+    recyclerView.setAdapter(adapter);
+  }
+
+  public void setErrorState(boolean state) {
+    isErrorHappend = state;
+    adapter.setErrorState(state);
+  }
+
+  public void removeLastItem() {
+    imagesList.remove(loadingViewIndex);
+    adapter.notifyItemRemoved(loadingViewIndex + 1);
+    adapter.notifyDataSetChanged();
+  }
+
+  public void addLoadingToRecyclerview() {
+    imagesList.add(null);
+    adapter.notifyItemInserted(imagesList.size() - 1);
+    loadingViewIndex = imagesList.size() -1;
+  }
+
+  private void setHeaderImage(final Image image) {
+    Glide.with(MainActivity.this)
+      .load(image.getUrl())
       .transition(new DrawableTransitionOptions().crossFade())
       .thumbnail(Glide.with(MainActivity.this).load(R.drawable.loading4))
+      .listener(new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+          return false;
+        }
+
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+          txtBannerDate.setText(image.getDate());
+          txtBannerDate.setVisibility(View.VISIBLE);
+          return false;
+        }
+      })
       .into((ImageView) findViewById(R.id.img_banner));
   }
 
-  private void setCall(int state) {
-    if(state == Base.API_STATE_RANDOM_IMAGE) {
-      call = apiInterface.getRandomImage(Base.API_KEY, 1);
-    } else {
-      //call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(15), Base.getDate(0));
-    }
-  }
 
-  private void updateRecyclerView(List<Image> images) {
+  private void updateRecyclerView() {
     //this reverse the list, becouse the list is ascending but we want decsending.
     Collections.reverse(images);
 
     //search images list and just if image.getType() is a "youtube video" or an "image" add to recycler list.
+    int limit = 0;
     for(Image image:images){
-      if(Base.isAYoutubVideo(image.getUrl()) || image.getMediaType().equals("image")) {
-        imageList.add(new Image(image.getTitle(), image.getDate(), image.getUrl(), image.getMediaType()));
+      if((Base.isAYoutubVideo(image.getUrl()) || image.getMediaType().equals("image")) && limit < 14) {
+        imagesList.add(new Image(image.getTitle(), image.getDate(), image.getUrl(), image.getMediaType(),
+          image.getCopyright(), image.getExplanation(),false));
+        limit++;
       }
     }
-    adapter.notifyDataSetChanged();
+    setLastDate();
   }
 
-  //handle setProgressbarVisibility with visibility of progressBar and recyclerView
-  private void handleUi(int state) {
-    switch (state) {
-      case Base.STATE_IN_PROGRESS:
-        //progressBar.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
-        break;
+  private void setLastDate() {
+    lastDate = imagesList.get(imagesList.size() - 1).getDate();
+    lastDate = Base.minesOneDayOfLastDate(lastDate);
+  }
 
-      case Base.STATE_PROGRESS_DONE:
-        //progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
-        break;
+  public void showAlertDialog(final int state, String title, String message, String btnPositive, String btnNegative) {
+    isErrorHappend = true;
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setTitle(title)
+      .setMessage(message)
+      .setPositiveButton(btnPositive, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+          if(state == Base.STATE_BUG_ERROR_HEADER || state == Base.STATE_BUG_ERROR_LIST) {
+            reportBug();
+            exitApp();
+          } else if(state == Base.STATE_CONNECTION_ERROR_LIST) {
+            MainActivity.this.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+            dialog.cancel();
+          } else if(state == Base.STATE_CONNECTION_ERROR_HEADER) {
+            MainActivity.this.startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+            isFirstOnResumed = true;
+            dialog.cancel();
+          }
+        }
+      })
+      .setNegativeButton(btnNegative, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int which) {
+          if(state == Base.STATE_BUG_ERROR_HEADER || state == Base.STATE_CONNECTION_ERROR_HEADER) {
+            exitApp();
+          } else if(state == Base.STATE_CONNECTION_ERROR_LIST || state == Base.STATE_BUG_ERROR_LIST) {
+            dialog.cancel();
+          }
+        }
+      })
+      .show();
+  }
 
-      case Base.STATE_ERROR:
-        //progressBar.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-        break;
+  public void reportBug() {
+
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Log.i(Base.APP_TAG, "onResume");
+    if(isFirstOnResumed) {
+      Log.i(Base.APP_TAG, "ifFirstLoad!");
+      getRandomImage();
+      isFirstOnResumed = false;
     }
   }
 
-  /***
-   * Load navigation menu header information
-   * like background image, profile image
-   * name, website, notifications action view (dot)
-   */
-  private void loadNavHeader() {
-    // name, website
-    txtName.setText("Ravi Tamada");
-    txtWebsite.setText("www.androidhive.info");
+  public void exitApp() {
+    Intent intent = new Intent(Intent.ACTION_MAIN);
+    intent.addCategory(Intent.CATEGORY_HOME);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+    System.exit(1);
+  }
+
+  @Override
+  public void onImageClick(int pos, Image image, ImageView shareImageView) {
+    Intent intent = new Intent(this, DetailActivity.class);
+    Log.i("mv_test_nasa", "title of image is: " + image.getTitle());
+    intent.putExtra(EXTRA_IMAGE_ITEM, image);
+    intent.putExtra(EXTRA_IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(shareImageView));
+
+    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, shareImageView,
+      ViewCompat.getTransitionName(shareImageView));
+
+    startActivity(intent, options.toBundle());
+  }
+
+
+  public void loadNavHeader() {
+    // name, desctiption
+    txtName.setText("Nasa APOD");
+    txtDescription.setText("Astronomy Picture Of Day");
 
     // loading header background image
     Glide.with(this).load(urlNavHeaderBg)
       .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
       .into(imgNavHeaderBg);
-
-    // Loading profile image
-    Glide.with(this).load(urlProfileImg)
-      .transition(new DrawableTransitionOptions().crossFade())
-      .thumbnail(0.5f)
-      .apply(RequestOptions.bitmapTransform(new CircleTransform(this)))
-      .into(imgProfile);
   }
 
   private void setUpNavigationView() {
-    //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
     navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
-      // This method will trigger on item Click of navigation menu
       @Override
       public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-        //Check to see which item was being clicked and perform appropriate action
         switch (menuItem.getItemId()) {
-          //Replacing the main content with ContentFragment Which is our Inbox View;
-          case R.id.nav_home:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+          case R.id.nav_astronomer:
             drawer.closeDrawers();
             return true;
-          case R.id.nav_photos:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+          case R.id.nav_setting:
             drawer.closeDrawers();
             return true;
-          case R.id.nav_movies:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+          case R.id.nav_about:
             drawer.closeDrawers();
             return true;
-          case R.id.nav_notifications:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
+          case R.id.nav_share:
             drawer.closeDrawers();
             return true;
-          case R.id.nav_settings:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
-            drawer.closeDrawers();
-            return true;
-          case R.id.nav_about_us:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, AboutUsActivity.class));
-            drawer.closeDrawers();
-            return true;
-          case R.id.nav_privacy_policy:
-            // launch new intent instead of loading fragment
-            //startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
+          case R.id.nav_contact:
             drawer.closeDrawers();
             return true;
         }
@@ -262,22 +365,16 @@ public class MainActivity extends MAppCompatActivity {
       }
     });
 
-
     ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.openDrawer, R.string.closeDrawer) {
-
       @Override
       public void onDrawerClosed(View drawerView) {
-        // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
         super.onDrawerClosed(drawerView);
       }
-
       @Override
       public void onDrawerOpened(View drawerView) {
-        // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
         super.onDrawerOpened(drawerView);
       }
     };
-
     //calling sync state is necessary or else your hamburger icon wont show up
     actionBarDrawerToggle.syncState();
   }
@@ -290,6 +387,5 @@ public class MainActivity extends MAppCompatActivity {
     }
     super.onBackPressed();
   }
-
 }
 

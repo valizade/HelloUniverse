@@ -10,13 +10,8 @@ import com.bumptech.glide.Glide;
 import com.mvalizade.nasaapod.R;
 import com.mvalizade.nasaapod.framework.activity.MAppCompatActivity;
 import com.mvalizade.nasaapod.framework.application.Base;
-import com.mvalizade.nasaapod.model.Image;
-import com.mvalizade.nasaapod.webservice.Call;
-import com.mvalizade.nasaapod.webservice.OnResponseListener;
 
-import java.util.List;
-
-public class SplashScreen extends MAppCompatActivity {
+public class SplashScreenActivity extends MAppCompatActivity {
 
   /** Duration of wait **/
   private final int SPLASH_DISPLAY_LENGTH = 5000;
@@ -34,45 +29,13 @@ public class SplashScreen extends MAppCompatActivity {
     startDelayThread();
   }
 
-  private void getRandomImage() {
-    Call.getRandomImage(new OnResponseListener() {
-      @Override
-      public <T> void onResponse(T object) {
-        super.onResponse(object);
-        Image image = (Image) object;
-      }
-
-      @Override
-      public <T> void onFailure(T object) {
-        super.onFailure(object);
-        Log.e(Base.APP_TAG, object.toString());
-      }
-    });
-  }
-
-  private void getImagesList() {
-    Call.getImagesList(new OnResponseListener() {
-      @Override
-      public <T> void onResponse(T object) {
-        super.onResponse(object);
-        List<Image> images = (List<Image>) object;
-      }
-
-      @Override
-      public <T> void onFailure(T object) {
-        super.onFailure(object);
-        Log.e(Base.APP_TAG, object.toString());
-      }
-    });
-  }
-
   private void goToMainActivity() {
     if(!isConnectedToInternet()) {
       showAlertDialog("ERROR",
         "Are you sure you're online?! we have problem to connet server, please check your connection and try again",
         "ok");
     } else {
-      Intent intent = new Intent(SplashScreen.this, MainTest.class);
+      Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
       startActivity(intent);
       finish();
     }

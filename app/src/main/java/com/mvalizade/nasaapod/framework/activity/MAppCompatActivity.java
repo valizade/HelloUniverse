@@ -111,6 +111,7 @@ public class MAppCompatActivity extends AppCompatActivity {
     return false;
   }
 
+  //simple alert dialog
   public void showAlertDialog(String title, String message, String btnPositive) {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(title)
@@ -124,6 +125,7 @@ public class MAppCompatActivity extends AppCompatActivity {
       .show();
   }
 
+  //exit of application
   public void exit() {
     Intent intent = new Intent(Intent.ACTION_MAIN);
     intent.addCategory(Intent.CATEGORY_HOME);

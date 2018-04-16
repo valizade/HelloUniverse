@@ -18,10 +18,6 @@ public class Call {
   private static APIInterface apiInterface;
   private static List<Image> images;
 
-  /*public Call() {
-    apiInterface = APIClient.getClient().create(APIInterface.class);
-  }*/
-
   public static void getRandomImage(final OnResponseListener onResponseListener) {
     Log.i(Base.APP_TAG, "getRandomImage start");
     apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -52,10 +48,10 @@ public class Call {
     });
   }
 
-  public static void getImagesList(final OnResponseListener onResponseListener) {
+  public static void getImagesList(final OnResponseListener onResponseListener, String lastDate) {
     Log.i(Base.APP_TAG, "getImagesList start");
     apiInterface = APIClient.getClient().create(APIInterface.class);
-    call = apiInterface.getImagesList(Base.API_KEY, Base.getDate(15, getDate()), getDate());
+    call = apiInterface.getImagesList(Base.API_KEY, Base.getDate(15, lastDate), lastDate);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull retrofit2.Call<List<Image>> call, @NonNull Response<List<Image>> response) {
