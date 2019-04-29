@@ -51,7 +51,7 @@ public class Call {
   public static void getImagesList(final OnResponseListener onResponseListener, String lastDate) {
     Log.i(Base.APP_TAG, "getImagesList start");
     apiInterface = APIClient.getClient().create(APIInterface.class);
-    call = apiInterface.getImagesList(Base.API_KEY, Base.getDate(15, lastDate), lastDate);
+    call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(15, lastDate), lastDate);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull retrofit2.Call<List<Image>> call, @NonNull Response<List<Image>> response) {
