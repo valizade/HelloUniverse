@@ -24,7 +24,7 @@ public class SplashScreenActivity extends MAppCompatActivity {
     ImageView imagSplash = findViewById(R.id.img_splash);
     Glide
       .with(this)
-      .load(R.drawable.jupiter)
+      .load(R.drawable.loading4)
       .into(imagSplash);
     startDelayThread();
   }

@@ -16,25 +16,48 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api 'androidx.appcompat:appcompat:1.0.0'
-    api 'androidx.constraintlayout:constraintlayout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    api 'com.google.android.material:material:1.0.0'
-    api 'androidx.legacy:legacy-support-v4:1.0.0'
-    api 'com.google.code.gson:gson:2.8.5'
-    api 'com.squareup.retrofit2:retrofit:2.3.0'
-    api 'com.squareup.retrofit2:converter-gson:2.3.0'
-    api 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    api 'androidx.recyclerview:recyclerview:1.0.0'
-    api 'androidx.cardview:cardview:1.0.0'
-    api 'com.github.bumptech.glide:glide:4.6.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
-    api 'androidx.percentlayout:percentlayout:1.0.0'
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.androidxAppcompatVersion}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.androidxConstraintlayoutVersion}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.androidxRecyclerview}"
+    implementation "androidx.cardview:cardview:${rootProject.ext.androidxCardview}"
+    implementation "androidx.percentlayout:percentlayout:${rootProject.ext.androidxPercentlayoutVersion}"
+    implementation "androidx.legacy:legacy-support-v4:${rootProject.ext.androidxLegacyVersion}"
+
+    implementation "com.google.android.material:material:${rootProject.ext.googleMaterialVersion}"
+
+    testImplementation "junit:junit:${rootProject.ext.junitVersion}"
+    androidTestImplementation "androidx.test:runner:${rootProject.ext.androidxTestVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.androidxTestEspressoVersion}"
+
+    implementation "android.arch.persistence.room:runtime:${rootProject.ext.roomVersion}"
+    annotationProcessor "android.arch.persistence.room:compiler:${rootProject.ext.roomVersion}"
+
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+
+    implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
+
+    implementation "com.google.dagger:dagger:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger-android-support:${rootProject.ext.daggerVersion}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+
+    implementation "javax.annotation:${rootProject.ext.jsr250Version}"
+
+    implementation "com.jakewharton:butterknife:${rootProject.ext.butterknifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${rootProject.ext.butterknifeVersion}"
+
+    implementation "org.greenrobot:eventbus:${rootProject.ext.eventbusVersion}"
+
+    implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxjavaVersion}"
+    implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxandroidVersion}"
+    implementation "com.jakewharton.rxbinding2:rxbinding:${rootProject.ext.rxbindingVersion}"
 }

@@ -33,6 +33,8 @@ ext {
     androidxConstraintlayoutVersion='2.0.0-beta1'
     androidxRecyclerview='1.1.0-alpha06'
     androidxCardview='1.0.0'
+    androidxPercentlayoutVersion='1.0.0'
+    androidxLegacyVersion='1.0.0'
 
     googleMaterialVersion='1.0.0'
 
