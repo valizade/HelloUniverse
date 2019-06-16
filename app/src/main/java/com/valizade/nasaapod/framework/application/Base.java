@@ -1,4 +1,4 @@
-package com.mvalizade.nasaapod.framework.application;
+package com.valizade.nasaapod.framework.application;
 
 import android.app.Application;
 

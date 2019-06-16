@@ -1,11 +1,11 @@
-package com.mvalizade.nasaapod.webservice;
+package com.valizade.nasaapod.webservice;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
 
-import com.mvalizade.nasaapod.MediaType;
-import com.mvalizade.nasaapod.framework.application.Base;
-import com.mvalizade.nasaapod.model.Image;
+import com.valizade.nasaapod.MediaType;
+import com.valizade.nasaapod.framework.application.Base;
+import com.valizade.nasaapod.model.Image;
 
 import java.util.List;
 

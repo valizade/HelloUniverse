@@ -1,4 +1,4 @@
-package com.mvalizade.nasaapod.model;
+package com.valizade.nasaapod.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

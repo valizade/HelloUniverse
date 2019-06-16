@@ -1,4 +1,4 @@
-package com.mvalizade.nasaapod.activity;
+package com.valizade.nasaapod.activity;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -14,8 +14,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.mvalizade.nasaapod.R;
-import com.mvalizade.nasaapod.model.Image;
+import com.valizade.nasaapod.R;
+import com.valizade.nasaapod.model.Image;
 
 public class DetailActivity extends AppCompatActivity {
 

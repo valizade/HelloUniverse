@@ -1,6 +1,6 @@
-package com.mvalizade.nasaapod.webservice;
+package com.valizade.nasaapod.webservice;
 
-import com.mvalizade.nasaapod.model.Image;
+import com.valizade.nasaapod.model.Image;
 
 import java.util.List;
 

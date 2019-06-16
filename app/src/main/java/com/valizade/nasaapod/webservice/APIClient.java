@@ -1,4 +1,4 @@
-package com.mvalizade.nasaapod.webservice;
+package com.valizade.nasaapod.webservice;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

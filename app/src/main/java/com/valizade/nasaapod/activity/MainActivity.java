@@ -1,4 +1,4 @@
-package com.mvalizade.nasaapod.activity;
+package com.valizade.nasaapod.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,15 +33,15 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.mvalizade.nasaapod.R;
-import com.mvalizade.nasaapod.adapter.ImageAdapter;
-import com.mvalizade.nasaapod.framework.activity.MAppCompatActivity;
-import com.mvalizade.nasaapod.framework.application.Base;
-import com.mvalizade.nasaapod.framework.listener.ImageItemClickListener;
-import com.mvalizade.nasaapod.framework.listener.OnLoadMoreListener;
-import com.mvalizade.nasaapod.framework.listener.OnRefreshListener;
-import com.mvalizade.nasaapod.model.Image;
-import com.mvalizade.nasaapod.webservice.OnResponseListener;
+import com.valizade.nasaapod.R;
+import com.valizade.nasaapod.adapter.ImageAdapter;
+import com.valizade.nasaapod.framework.activity.MAppCompatActivity;
+import com.valizade.nasaapod.framework.application.Base;
+import com.valizade.nasaapod.framework.listener.ImageItemClickListener;
+import com.valizade.nasaapod.framework.listener.OnLoadMoreListener;
+import com.valizade.nasaapod.framework.listener.OnRefreshListener;
+import com.valizade.nasaapod.model.Image;
+import com.valizade.nasaapod.webservice.OnResponseListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -126,7 +126,7 @@ public class MainActivity extends MAppCompatActivity implements ImageItemClickLi
   }
 
   public void getRandomImage() {
-    com.mvalizade.nasaapod.webservice.Call.getRandomImage(new OnResponseListener() {
+    com.valizade.nasaapod.webservice.Call.getRandomImage(new OnResponseListener() {
       @Override
       public <T> void onResponse(T object) {
         super.onResponse(object);
@@ -149,7 +149,7 @@ public class MainActivity extends MAppCompatActivity implements ImageItemClickLi
 
   public void getImagesList() {
     addLoadingToRecyclerview();
-    com.mvalizade.nasaapod.webservice.Call.getImagesList(new OnResponseListener() {
+    com.valizade.nasaapod.webservice.Call.getImagesList(new OnResponseListener() {
       @Override
       public <T> void onResponse(T object) {
         super.onResponse(object);

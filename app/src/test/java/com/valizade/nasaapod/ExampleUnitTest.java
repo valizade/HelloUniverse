@@ -1,4 +1,4 @@
-package com.mvalizade.nasaapod;
+package com.valizade.nasaapod;
 
 import org.junit.Test;
 
