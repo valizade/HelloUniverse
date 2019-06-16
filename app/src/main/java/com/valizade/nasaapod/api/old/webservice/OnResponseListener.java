@@ -1,4 +1,4 @@
-package com.valizade.nasaapod.webservice;
+package com.valizade.nasaapod.api.old.webservice;
 
 public abstract class OnResponseListener {
   public <T> void onResponse(T object) {};

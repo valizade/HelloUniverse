@@ -1,4 +1,4 @@
-package com.valizade.nasaapod.activity;
+package com.valizade.nasaapod.screen.splash;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.valizade.nasaapod.R;
-import com.valizade.nasaapod.framework.activity.MAppCompatActivity;
-import com.valizade.nasaapod.framework.application.Base;
+import com.valizade.nasaapod.utils.MAppCompatActivity;
+import com.valizade.nasaapod.Base;
+import com.valizade.nasaapod.screen.main.MainActivity;
 
 public class SplashScreenActivity extends MAppCompatActivity {
 

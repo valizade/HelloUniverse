@@ -1,4 +1,4 @@
-package com.valizade.nasaapod.adapter;
+package com.valizade.nasaapod.screen.main.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -21,11 +21,11 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.valizade.nasaapod.R;
-import com.valizade.nasaapod.framework.application.Base;
-import com.valizade.nasaapod.framework.listener.ImageItemClickListener;
-import com.valizade.nasaapod.framework.listener.OnLoadMoreListener;
-import com.valizade.nasaapod.framework.listener.OnRefreshListener;
-import com.valizade.nasaapod.model.Image;
+import com.valizade.nasaapod.Base;
+import com.valizade.nasaapod.screen.main.ImageItemClickListener;
+import com.valizade.nasaapod.screen.main.OnLoadMoreListener;
+import com.valizade.nasaapod.screen.main.OnRefreshListener;
+import com.valizade.nasaapod.entities.Image;
 
 import java.util.List;
 

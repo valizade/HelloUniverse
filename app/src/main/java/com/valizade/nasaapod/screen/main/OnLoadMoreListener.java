@@ -1,4 +1,4 @@
-package com.valizade.nasaapod.framework.listener;
+package com.valizade.nasaapod.screen.main;
 
 public interface OnLoadMoreListener {
   void onLoadMore();

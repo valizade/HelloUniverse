@@ -1,4 +1,4 @@
-package com.valizade.nasaapod.framework.activity;
+package com.valizade.nasaapod.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

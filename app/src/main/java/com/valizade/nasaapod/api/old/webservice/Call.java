@@ -1,11 +1,13 @@
-package com.valizade.nasaapod.webservice;
+package com.valizade.nasaapod.api.old.webservice;
 
 import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.valizade.nasaapod.MediaType;
-import com.valizade.nasaapod.framework.application.Base;
-import com.valizade.nasaapod.model.Image;
+import com.valizade.nasaapod.api.ApodClient;
+import com.valizade.nasaapod.api.ApodService;
+import com.valizade.nasaapod.Base;
+import com.valizade.nasaapod.entities.Image;
 
 import java.util.List;
 
@@ -15,13 +17,13 @@ import retrofit2.Response;
 public class Call {
 
   private static retrofit2.Call<List<Image>> call;
-  private static APIInterface apiInterface;
+  private static ApodService sApodService;
   private static List<Image> images;
 
   public static void getRandomImage(final OnResponseListener onResponseListener) {
     Log.i(Base.APP_TAG, "getRandomImage start");
-    apiInterface = APIClient.getClient().create(APIInterface.class);
-    call = apiInterface.getRandomImage(Base.API_KEY_DEMO, 4);
+    sApodService = ApodClient.getClient().create(ApodService.class);
+    call = sApodService.getRandomImage(Base.API_KEY_DEMO, 4);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull retrofit2.Call<List<Image>> call, @NonNull Response<List<Image>> response) {
@@ -50,8 +52,8 @@ public class Call {
 
   public static void getImagesList(final OnResponseListener onResponseListener, String lastDate) {
     Log.i(Base.APP_TAG, "getImagesList start");
-    apiInterface = APIClient.getClient().create(APIInterface.class);
-    call = apiInterface.getImagesList(Base.API_KEY_DEMO, Base.getDate(15, lastDate), lastDate);
+    sApodService = ApodClient.getClient().create(ApodService.class);
+    call = sApodService.getImagesList(Base.API_KEY_DEMO, Base.getDate(15, lastDate), lastDate);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull retrofit2.Call<List<Image>> call, @NonNull Response<List<Image>> response) {

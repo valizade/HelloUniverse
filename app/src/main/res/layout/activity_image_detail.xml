@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="top"
-    tools:context=".activity.DetailActivity">
+    tools:context=".screen.detail.DetailActivity">
 
     <LinearLayout
       android:id="@+id/image_layout"

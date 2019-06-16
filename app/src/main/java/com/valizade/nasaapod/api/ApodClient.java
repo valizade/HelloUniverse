@@ -1,9 +1,9 @@
-package com.valizade.nasaapod.webservice;
+package com.valizade.nasaapod.api;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class APIClient {
+public class ApodClient {
 
   public static final String BASE_URL="https://api.nasa.gov/";
   private static Retrofit retrofit = null;

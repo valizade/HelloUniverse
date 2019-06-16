@@ -1,4 +1,4 @@
-package com.valizade.nasaapod.activity;
+package com.valizade.nasaapod.screen.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,15 +34,13 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.valizade.nasaapod.R;
-import com.valizade.nasaapod.adapter.ImageAdapter;
-import com.valizade.nasaapod.framework.activity.MAppCompatActivity;
-import com.valizade.nasaapod.framework.application.Base;
-import com.valizade.nasaapod.framework.listener.ImageItemClickListener;
-import com.valizade.nasaapod.framework.listener.OnLoadMoreListener;
-import com.valizade.nasaapod.framework.listener.OnRefreshListener;
-import com.valizade.nasaapod.model.Image;
-import com.valizade.nasaapod.webservice.OnResponseListener;
+import com.valizade.nasaapod.screen.main.adapter.ImageAdapter;
+import com.valizade.nasaapod.utils.MAppCompatActivity;
+import com.valizade.nasaapod.Base;
+import com.valizade.nasaapod.entities.Image;
+import com.valizade.nasaapod.api.old.webservice.OnResponseListener;
 
+import com.valizade.nasaapod.screen.detail.DetailActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -126,7 +124,7 @@ public class MainActivity extends MAppCompatActivity implements ImageItemClickLi
   }
 
   public void getRandomImage() {
-    com.valizade.nasaapod.webservice.Call.getRandomImage(new OnResponseListener() {
+    com.valizade.nasaapod.api.old.webservice.Call.getRandomImage(new OnResponseListener() {
       @Override
       public <T> void onResponse(T object) {
         super.onResponse(object);
@@ -149,7 +147,7 @@ public class MainActivity extends MAppCompatActivity implements ImageItemClickLi
 
   public void getImagesList() {
     addLoadingToRecyclerview();
-    com.valizade.nasaapod.webservice.Call.getImagesList(new OnResponseListener() {
+    com.valizade.nasaapod.api.old.webservice.Call.getImagesList(new OnResponseListener() {
       @Override
       public <T> void onResponse(T object) {
         super.onResponse(object);
