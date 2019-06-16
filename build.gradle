@@ -27,3 +27,30 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    androidxAppcompatVersion='1.0.2'
+    androidxConstraintlayoutVersion='2.0.0-beta1'
+    androidxRecyclerview='1.1.0-alpha06'
+    androidxCardview='1.0.0'
+
+    googleMaterialVersion='1.0.0'
+
+    junitVersion='4.12'
+    androidxTestVersion='1.2.0'
+    androidxTestEspressoVersion='3.2.0'
+
+    rxjavaVersion='2.2.0'
+    rxandroidVersion='2.1.0'
+    rxbindingVersion='2.0.0'
+
+    roomVersion = '1.0.0-alpha4'
+    facebookSdkVersion = '4.42.0'
+    retrofitVersion = '2.6.0'
+    glideVersion='4.9.0'
+    daggerVersion='2.23.1'
+    jsr250Version='jsr250-api:1.0'
+    butterknifeVersion='10.1.0'
+    eventbusVersion='3.1.1'
+    dbflowVersion = "5.0.0-alpha1"
+}
