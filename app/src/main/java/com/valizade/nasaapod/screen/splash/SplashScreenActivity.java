@@ -1,56 +1,45 @@
 package com.valizade.nasaapod.screen.splash;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.valizade.nasaapod.R;
-import com.valizade.nasaapod.utils.MAppCompatActivity;
-import com.valizade.nasaapod.Base;
 import com.valizade.nasaapod.screen.main.MainActivity;
+import com.valizade.nasaapod.utils.MAppCompatActivity;
 
-public class SplashScreenActivity extends MAppCompatActivity {
+public class SplashScreenActivity extends AppCompatActivity {
 
-  /** Duration of wait **/
-  private final int SPLASH_DISPLAY_LENGTH = 5000;
+  private final int SPLASH_DISPLAY_LENGTH = 2000;
 
-  /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splashscreen);
+
     ImageView imagSplash = findViewById(R.id.img_splash);
+
+    //I Used Glide because the image show in this image view is a gif
     Glide
-      .with(this)
-      .load(R.drawable.loading4)
-      .into(imagSplash);
+        .with(this)
+        .load(R.drawable.jupiter)
+        .into(imagSplash);
+
     startDelayThread();
   }
 
-  private void goToMainActivity() {
-    if(!isConnectedToInternet()) {
-      showAlertDialog("ERROR",
-        "Are you sure you're online?! we have problem to connet server, please check your connection and try again",
-        "ok");
-    } else {
-      Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
-      startActivity(intent);
-      finish();
-    }
+  private void startDelayThread() {
+    new Handler().postDelayed(this::goToMainActivity, SPLASH_DISPLAY_LENGTH);
   }
 
-  private void startDelayThread() {
-    Log.i(Base.APP_TAG, "startDelayThread() start");
-    new Handler().postDelayed(new Runnable(){
-      @Override
-      public void run() {
-        Log.i(Base.APP_TAG, "startDelayThread() finish");
-        goToMainActivity();
-      }
-    }, SPLASH_DISPLAY_LENGTH);
+  private void goToMainActivity() {
+    Intent intent = MainActivity
+        .newInstance(SplashScreenActivity.this);
+    startActivity(intent);
+    finish();
   }
 
 }

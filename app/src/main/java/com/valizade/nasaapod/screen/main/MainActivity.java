@@ -1,8 +1,11 @@
 package com.valizade.nasaapod.screen.main;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -50,6 +53,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends MAppCompatActivity implements ImageItemClickListener {
+
+  private static final String IS_NETWORK_AVAILABLE_AND_CONNECTED = "com.valizade.nasaapod.screen.main.is_network_available";
+
+  public static Intent newInstance(Context packageContext) {
+    return new Intent(packageContext, MainActivity.class);
+  }
+
+  public boolean isNetworkAvailableAndConnected() {
+    ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+    boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+    boolean isNetworkConnected = isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
+    return isNetworkConnected;
+  }
+
+
+
+
 
   @BindView(R.id.recycler_view) RecyclerView recyclerView;
   @BindView(R.id.txt_banner_date) TextView txtBannerDate;

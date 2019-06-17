@@ -111,6 +111,20 @@ public class MAppCompatActivity extends AppCompatActivity {
     return false;
   }
 
+  public boolean isConnected() {
+    ConnectivityManager cm = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    NetworkInfo nInfo = cm.getActiveNetworkInfo();
+    return nInfo != null && nInfo.isConnected();
+  }
+
+  public boolean isNetworkAvailableAndConnected() {
+    ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+    boolean isNetworkAvailable = cm.getActiveNetworkInfo() != null;
+    boolean isNetworkConnected = isNetworkAvailable && cm.getActiveNetworkInfo().isConnected();
+    return isNetworkConnected;
+  }
+
+
   //simple alert dialog
   public void showAlertDialog(String title, String message, String btnPositive) {
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
