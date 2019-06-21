@@ -19,40 +19,10 @@ import android.view.View;
 @SuppressLint("Registered")
 public class MAppCompatActivity extends AppCompatActivity {
 
-  /**
-   * Initializing collapsing toolbar
-   * Will show and hide the toolbar title on scroll
-   */
-  public void initCollapsingToolbar(final String toolbarTitle, int colapsingToolbar, int appBar) {
-    final CollapsingToolbarLayout collapsingToolbar = findViewById(colapsingToolbar);
-    collapsingToolbar.setTitle(" ");
-    AppBarLayout appBarLayout = findViewById(appBar);
-    appBarLayout.setExpanded(true);
-
-    // hiding & showing the title when toolbar expanded & collapsed
-    appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-      boolean isShow = false;
-      int scrollRange = -1;
-
-      @Override
-      public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (scrollRange == -1) {
-          scrollRange = appBarLayout.getTotalScrollRange();
-        }
-        if (scrollRange + verticalOffset == 0) {
-          collapsingToolbar.setTitle(toolbarTitle);
-          isShow = true;
-        } else if (isShow) {
-          collapsingToolbar.setTitle(" ");
-          isShow = false;
-        }
-      }
-    });
-  }
-
-  /**
+/*
+  *//**
    * RecyclerView item decoration - give equal margin around grid item
-   */
+   *//*
   public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private int spanCount;
@@ -88,9 +58,9 @@ public class MAppCompatActivity extends AppCompatActivity {
     }
   }
 
-  /**
+  *//**
    * Converting dp to pixel
-   */
+   *//*
   public int dpToPx(int dp) {
     Resources r = getResources();
     return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
@@ -146,6 +116,6 @@ public class MAppCompatActivity extends AppCompatActivity {
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
     System.exit(1);
-  }
+  }*/
 
 }

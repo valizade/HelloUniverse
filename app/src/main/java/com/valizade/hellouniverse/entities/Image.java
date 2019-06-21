@@ -49,7 +49,7 @@ public class Image implements Parcelable {
     this.isLoaded = isLoaded;
   }
 
-  public boolean getLoaded() {
+  public boolean isLoaded() {
     return isLoaded;
   }
 

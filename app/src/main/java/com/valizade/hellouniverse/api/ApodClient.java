@@ -17,4 +17,8 @@ public class ApodClient {
     }
     return retrofit;
   }
+
+  public ApodService getApodService(){
+    return getClient().create(ApodService.class);
+  }
 }

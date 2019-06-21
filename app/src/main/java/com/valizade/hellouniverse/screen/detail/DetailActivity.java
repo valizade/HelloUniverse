@@ -1,32 +1,19 @@
 package com.valizade.hellouniverse.screen.detail;
 
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.valizade.hellouniverse.R;
-import com.valizade.hellouniverse.screen.main.MainActivity;
-import com.valizade.hellouniverse.entities.Image;
 
 public class DetailActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_image_detail);
+    setContentView(R.layout.imagedetail_act);
     supportPostponeEnterTransition();
 
-    Bundle extras = getIntent().getExtras();
+    /*Bundle extras = getIntent().getExtras();
     Image imageItem = extras.getParcelable(MainActivity.EXTRA_IMAGE_ITEM);
 
     ImageView imageView = findViewById(R.id.detail_image_view);
@@ -65,6 +52,6 @@ public class DetailActivity extends AppCompatActivity {
           return false;
         }
       })
-      .into(imageView);
+      .into(imageView);*/
   }
 }

@@ -8,6 +8,7 @@ import com.valizade.hellouniverse.libs.GreenRobotEventBus;
 import com.valizade.hellouniverse.libs.base.ImageLoader;
 import dagger.Module;
 import dagger.Provides;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,7 +35,15 @@ public class LibraryModule {
 
   @Singleton
   @Provides
-  ImageLoader providesGlideImageLoader(RequestManager requestManager) {
+  @Named("listImageLoader")
+  ImageLoader providesGlideListImageLoader(RequestManager requestManager) {
+    return new GlideImageLoader(requestManager);
+  }
+
+  @Singleton
+  @Provides
+  @Named("headerImageLoader")
+  ImageLoader providesGlideHeaderImageLoader(RequestManager requestManager) {
     return new GlideImageLoader(requestManager);
   }
 

@@ -6,7 +6,7 @@
               xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
   <androidx.cardview.widget.CardView
-    android:id="@+id/card_view"
+    android:id="@+id/imageitem_card_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -19,7 +19,7 @@
       android:layout_height="match_parent">
 
       <ImageView
-        android:id="@+id/img_thumbnail"
+        android:id="@+id/imageitem_img_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="@dimen/album_cover_height"
         android:background="?attr/selectableItemBackgroundBorderless"
@@ -32,10 +32,10 @@
         card_view:layout_constraintTop_toTopOf="parent"/>
 
       <TextView
-        android:id="@+id/txt_splash_title"
+        android:id="@+id/imageitem_txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/img_thumbnail"
+        android:layout_below="@id/imageitem_img_thumbnail"
         android:layout_marginTop="8dp"
         android:paddingLeft="@dimen/album_title_padding"
         android:paddingRight="@dimen/album_title_padding"
@@ -44,13 +44,13 @@
         android:textSize="@dimen/album_title"
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@+id/img_thumbnail"/>
+        card_view:layout_constraintTop_toBottomOf="@+id/imageitem_img_thumbnail"/>
 
       <TextView
-        android:id="@+id/txt_date"
+        android:id="@+id/imageitem_txt_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_splash_title"
+        android:layout_below="@id/imageitem_txt_title"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:gravity="right"
@@ -61,10 +61,10 @@
         card_view:layout_constraintBottom_toBottomOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@+id/txt_splash_title"/>
+        card_view:layout_constraintTop_toBottomOf="@+id/imageitem_txt_title"/>
 
       <ImageView
-        android:id="@+id/img_play"
+        android:id="@+id/imageitem_img_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -75,10 +75,10 @@
         android:layout_marginTop="16dp"
         android:contentDescription="image_desc"
         android:visibility="gone"
-        card_view:layout_constraintBottom_toBottomOf="@+id/img_thumbnail"
-        card_view:layout_constraintEnd_toEndOf="@+id/img_thumbnail"
-        card_view:layout_constraintStart_toStartOf="@+id/img_thumbnail"
-        card_view:layout_constraintTop_toTopOf="@+id/img_thumbnail"
+        card_view:layout_constraintBottom_toBottomOf="@+id/imageitem_img_thumbnail"
+        card_view:layout_constraintEnd_toEndOf="@+id/imageitem_img_thumbnail"
+        card_view:layout_constraintStart_toStartOf="@+id/imageitem_img_thumbnail"
+        card_view:layout_constraintTop_toTopOf="@+id/imageitem_img_thumbnail"
         card_view:srcCompat="@drawable/ic_play_circle_filled_black_24dp"
         tools:ignore="VectorDrawableCompat"/>
 

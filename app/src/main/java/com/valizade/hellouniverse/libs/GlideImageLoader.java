@@ -1,5 +1,6 @@
 package com.valizade.hellouniverse.libs;
 
+import android.util.Log;
 import android.widget.ImageView;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -17,7 +18,9 @@ public class GlideImageLoader implements ImageLoader {
 
   @Override
   public void setOnFinishLoadingImageListener(Object listener) {
+    Log.d("testTag0", "setOnFinishLoadingImageListener");
     if (listener instanceof RequestListener) {
+      Log.d("testTag0", "and listener instanceof RequestListener.");
       mRequestListener = (RequestListener) listener;
     }
   }
