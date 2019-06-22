@@ -35,10 +35,11 @@ public class Image implements Parcelable {
 
   private boolean isLoaded;
 
-  public Image(String title, String date, String url, String mediaType, String copyright, String explanation, boolean isLoaded) {
+  public Image(String title, String date, String url, String hdurl, String mediaType, String copyright, String explanation, boolean isLoaded) {
     this.date = date;
     this.title = title;
     this.url = url;
+    this.hdurl = hdurl;
     this.mediaType = mediaType;
     this.copyright = copyright;
     this.explanation = explanation;
@@ -135,6 +136,7 @@ public class Image implements Parcelable {
     copyright = in.readString();
     explanation = in.readString();
     url = in.readString();
+    hdurl = in.readString();
   }
 
   @Override
@@ -149,6 +151,7 @@ public class Image implements Parcelable {
     dest.writeString(copyright);
     dest.writeString(explanation);
     dest.writeString(url);
+    dest.writeString(hdurl);
   }
   
 }

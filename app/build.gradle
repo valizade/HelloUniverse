@@ -14,6 +14,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "NASA_API_KEY", project.property('NASA_API_KEY')
+        }
+        debug {
+            buildConfigField "String", "NASA_API_KEY", project.property('NASA_API_KEY')
         }
     }
     compileOptions {
@@ -60,4 +64,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:${rootProject.ext.rxjavaVersion}"
     implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxandroidVersion}"
     implementation "com.jakewharton.rxbinding2:rxbinding:${rootProject.ext.rxbindingVersion}"
+
+    implementation "com.github.chrisbanes:PhotoView:${rootProject.ext.photoViewVersion}"
 }

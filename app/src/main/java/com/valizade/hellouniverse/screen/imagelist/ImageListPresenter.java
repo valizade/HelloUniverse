@@ -1,5 +1,6 @@
 package com.valizade.hellouniverse.screen.imagelist;
 
+import android.util.Log;
 import com.valizade.hellouniverse.libs.base.EventBus;
 import com.valizade.hellouniverse.screen.imagelist.ImageListContract.View;
 import com.valizade.hellouniverse.screen.imagelist.event.ImageListEvent;
@@ -65,14 +66,16 @@ public class ImageListPresenter implements ImageListContract.Presenter {
   }
 
   private void showUi() {
-    if (isHeaderGet.equals("true") && isListGet.equals("true")) {
-      mView.showMainProgressbar(false);
-      mView.showUi(true);
-      isFirstTime = false;
-    } else if (isHeaderGet.equals("false") || isListGet.equals("false")) {
-      mView.showMainProgressbar(false);
-      mView.showErrorScreen(true);
-      isFirstTime = false;
+    if (isHeaderGet != null && isListGet != null) {
+      if (isHeaderGet.equals("true") && isListGet.equals("true")) {
+        mView.showMainProgressbar(false);
+        mView.showUi(true);
+        isFirstTime = false;
+      } else if (isHeaderGet.equals("false") || isListGet.equals("false")) {
+        mView.showMainProgressbar(false);
+        mView.showErrorScreen(true);
+        isFirstTime = false;
+      }
     }
   }
 

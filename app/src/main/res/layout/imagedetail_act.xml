@@ -1,87 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.percentlayout.widget.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_simple_two"
+<androidx.percentlayout.widget.PercentRelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/activity_simple_two"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:gravity="top"
+  tools:context=".screen.detail.DetailActivity">
+
+  <LinearLayout
+    android:id="@+id/image_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="top"
-    tools:context=".screen.detail.DetailActivity">
+    android:background="#CC000000"
+    android:orientation="vertical"
+    app:layout_heightPercent="50%"
+    app:layout_widthPercent="100%">
 
-    <LinearLayout
-      android:id="@+id/image_layout"
+    <ImageView
+      android:id="@+id/detail_image_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="#CC000000"
-      android:orientation="vertical"
-      app:layout_heightPercent="50%"
-      app:layout_widthPercent="100%">
+      android:contentDescription="desc"
+      android:scaleType="centerCrop"
+      android:src="@mipmap/ic_launcher"/>
 
-        <ImageView
-          android:id="@+id/detail_image_view"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:contentDescription="desc"
-          android:scaleType="centerCrop"
-          android:src="@mipmap/ic_launcher"/>
+  </LinearLayout>
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:layout_below="@+id/image_layout"
+    android:background="#CC000000"
+    android:clipToPadding="false">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="4dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="title"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="24sp"/>
+
+      <TextView
+        android:id="@+id/txt_date"
+        android:textStyle="italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="date"
+        android:textColor="@color/colorDivider"
+        android:textSize="14sp"/>
+      <TextView
+        android:id="@+id/txt_copywrite"
+        android:textStyle="italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="copywrite"
+        android:textColor="@color/colorDivider"
+        android:textSize="14sp"/>
+
+      <TextView
+        android:id="@+id/txt_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="description"
+        android:textColor="@color/cardview_light_background"
+        android:textSize="18sp"/>
 
     </LinearLayout>
-
-    <ScrollView
-      android:layout_width="match_parent"
-      android:layout_height="150dp"
-      android:layout_alignParentBottom="true"
-      android:layout_below="@+id/image_layout"
-      android:background="#CC000000"
-      android:clipToPadding="false"
-      android:paddingBottom="16dp"
-      android:paddingLeft="16dp"
-      android:paddingRight="16dp"
-      android:paddingTop="16dp">
-
-        <LinearLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:orientation="vertical">
-
-            <TextView
-              android:id="@+id/txt_title"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:fontFamily="sans-serif-smallcaps"
-              android:text="title"
-              android:textColor="@color/cardview_light_background"
-              android:textSize="24sp"/>
-
-            <TextView
-              android:id="@+id/txt_copywrite"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="copywrite"
-              android:textColor="@color/colorDivider"
-              android:textSize="14sp"
-              android:textStyle="bold"/>
-
-            <TextView
-              android:id="@+id/txt_date"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:text="date"
-              android:textColor="@color/colorDivider"
-              android:textSize="14sp"
-              android:textStyle="bold"/>
-
-            <TextView
-              android:id="@+id/txt_desc"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="8dp"
-              android:text="description"
-              android:textColor="@color/colorDivider"
-              android:textSize="18sp"
-              android:textStyle="bold"/>
-
-        </LinearLayout>
-    </ScrollView>
+  </ScrollView>
 
 </androidx.percentlayout.widget.PercentRelativeLayout>

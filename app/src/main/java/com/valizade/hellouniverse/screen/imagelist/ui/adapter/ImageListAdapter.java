@@ -1,7 +1,6 @@
 package com.valizade.hellouniverse.screen.imagelist.ui.adapter;
 
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -48,7 +46,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListViewHolder> 
   @Override
   public ImageListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
     View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.image_item, parent, false);
+        .inflate(R.layout.imagelist_item, parent, false);
     return new ImageListViewHolder(view);
   }
 

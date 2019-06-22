@@ -2,6 +2,7 @@ package com.valizade.hellouniverse.screen.imagelist;
 
 import android.util.Log;
 import androidx.annotation.NonNull;
+import com.valizade.hellouniverse.BuildConfig;
 import com.valizade.hellouniverse.api.ApodClient;
 import com.valizade.hellouniverse.entities.Image;
 import com.valizade.hellouniverse.libs.base.EventBus;
@@ -35,7 +36,7 @@ public class ImageListRepositoryImpl implements ImageListRepository {
   @Override
   public void getListImages() {
     Call<List<Image>> call = mApodClient.getApodService()
-        .getImagesList("DEMO_KEY", DateUtils.getDate(22, mLastImageDate), mLastImageDate);
+        .getImagesList("DEMO_KEY", DateUtils.getDate(40, mLastImageDate), mLastImageDate);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull Call<List<Image>> call,
@@ -55,10 +56,10 @@ public class ImageListRepositoryImpl implements ImageListRepository {
             }
 
           }
-          // We want just 14 image, because we want to have the last column full and also maybe
-          // we have other video that aren't youtube video, so we get 14 for sure that we get
+          // We want just 30 image, because we want to have the last column full and also maybe
+          // we have other video that aren't youtube video, so we get 30 for sure that we get
           // correct number of images.
-          List<Image> result = images.subList(0, 14);
+          List<Image> result = images.subList(0, 30);
 
           mLastImageDate = DateUtils.minesOneDayOfLastDate(result.get(result.size() - 1).getDate());
 
@@ -75,6 +76,8 @@ public class ImageListRepositoryImpl implements ImageListRepository {
     });
   }
 
+  //BuildConfig.NASA_API_KEY
+  //"DEMO_KEY"
   @Override
   public void getRandomImage() {
     Call<List<Image>> call = mApodClient.getApodService().getRandomImage("DEMO_KEY", 4);

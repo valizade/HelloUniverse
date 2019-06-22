@@ -10,13 +10,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -35,6 +36,7 @@ import com.valizade.hellouniverse.Base;
 import com.valizade.hellouniverse.R;
 import com.valizade.hellouniverse.entities.Image;
 import com.valizade.hellouniverse.libs.base.ImageLoader;
+import com.valizade.hellouniverse.screen.detail.DetailActivity;
 import com.valizade.hellouniverse.screen.imagelist.ImageListContract;
 import com.valizade.hellouniverse.screen.imagelist.di.ImageListComponent;
 import com.valizade.hellouniverse.screen.imagelist.ui.adapter.ImageListAdapter;
@@ -232,14 +234,12 @@ public class ImageListActivity extends AppCompatActivity implements ImageListCon
       @Override
       public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target,
           boolean isFirstResource) {
-        Log.d("testTag0", "imageHeader load is failed!");
         return false;
       }
 
       @Override
       public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target,
           DataSource dataSource, boolean isFirstResource) {
-        Log.d("testTag0", "imageHeader is ready!");
         return false;
       }
     };
@@ -258,12 +258,18 @@ public class ImageListActivity extends AppCompatActivity implements ImageListCon
 
   @Override
   public void showErrorMessage(String errorMessage) {
-    Snackbar.make(mUiContent, "Error Load! Please check your connection and then swip up to referesh.", Snackbar.LENGTH_LONG).show();
+    Snackbar
+        .make(mUiContent, "Error Load! Please check your connection and then swip up to referesh.",
+            Snackbar.LENGTH_LONG).show();
   }
 
   @Override
   public void onClick(Image image, ImageView shareImageView) {
-    Toast.makeText(this, "Navigate to the DetailActivity", Toast.LENGTH_LONG).show();
+    Intent intent = DetailActivity.newInstance(this, image, shareImageView);
+    ActivityOptionsCompat options = ActivityOptionsCompat
+        .makeSceneTransitionAnimation(this, shareImageView,
+            ViewCompat.getTransitionName(shareImageView));
+    startActivity(intent, options.toBundle());
   }
 
   @Override
