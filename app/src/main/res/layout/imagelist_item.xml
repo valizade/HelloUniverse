@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+  <androidx.cardview.widget.CardView
+    android:id="@+id/imageitem_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/card_margin"
+    android:elevation="3dp"
+    card_view:cardCornerRadius="@dimen/card_album_radius">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <ImageView
+        android:id="@+id/imageitem_img_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/album_cover_height"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:contentDescription="image_desc"
+        android:focusable="true"
+        android:scaleType="centerCrop"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"/>
+
+      <TextView
+        android:id="@+id/imageitem_txt_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageitem_img_thumbnail"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="@dimen/album_title_padding"
+        android:paddingRight="@dimen/album_title_padding"
+        android:paddingTop="@dimen/album_title_padding"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="@dimen/album_title"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@+id/imageitem_img_thumbnail"/>
+
+      <TextView
+        android:id="@+id/imageitem_txt_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageitem_txt_title"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:paddingBottom="@dimen/songs_count_padding_bottom"
+        android:paddingLeft="@dimen/album_title_padding"
+        android:paddingRight="@dimen/album_title_padding"
+        android:textSize="@dimen/songs_count"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@+id/imageitem_txt_title"/>
+
+      <ImageView
+        android:id="@+id/imageitem_img_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="image_desc"
+        android:visibility="gone"
+        card_view:layout_constraintBottom_toBottomOf="@+id/imageitem_img_thumbnail"
+        card_view:layout_constraintEnd_toEndOf="@+id/imageitem_img_thumbnail"
+        card_view:layout_constraintStart_toStartOf="@+id/imageitem_img_thumbnail"
+        card_view:layout_constraintTop_toTopOf="@+id/imageitem_img_thumbnail"
+        card_view:srcCompat="@drawable/ic_play_circle_filled_black_24dp"
+        tools:ignore="VectorDrawableCompat"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </androidx.cardview.widget.CardView>
+
+</LinearLayout>
