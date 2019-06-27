@@ -1,20 +1,16 @@
 package com.valizade.hellouniverse.screen.imagelist;
 
-import android.util.Log;
-import androidx.annotation.NonNull;
-import com.valizade.hellouniverse.BuildConfig;
 import com.valizade.hellouniverse.api.ApodClient;
 import com.valizade.hellouniverse.entities.Image;
 import com.valizade.hellouniverse.libs.base.EventBus;
 import com.valizade.hellouniverse.screen.imagelist.event.EventType;
 import com.valizade.hellouniverse.screen.imagelist.event.ImageListEvent;
 import com.valizade.hellouniverse.utils.DateUtils;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ImageListRepositoryImpl implements ImageListRepository {
 
@@ -35,7 +31,7 @@ public class ImageListRepositoryImpl implements ImageListRepository {
 
   @Override
   public void getListImages() {
-    Call<List<Image>> call = mApodClient.getApodService()
+    /*Call<List<Image>> call = mApodClient.getApodService()
         .getImagesList("DEMO_KEY", DateUtils.getDate(40, mLastImageDate), mLastImageDate);
     call.enqueue(new Callback<List<Image>>() {
       @Override
@@ -73,14 +69,45 @@ public class ImageListRepositoryImpl implements ImageListRepository {
       public void onFailure(@NonNull Call<List<Image>> call, @NonNull Throwable t) {
         post(EventType.IMAGE_LIST_EVENT_FAILURE, t.getMessage());
       }
-    });
+    });*/
+    Observable<List<Image>> imageListObservable = mApodClient.getApodService()
+        .getImagesList("DEMO_KEY", DateUtils.getDate(40, mLastImageDate), mLastImageDate);
+    imageListObservable
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .map(l -> Observable.fromIterable(l))
+        .flatMap(o -> o)
+        .filter(i -> (isAYoutubVideo(i.getUrl()) || i.getMediaType().equals("image")))
+        .toList()
+        .map(t -> {
+          Collections.reverse(t);
+          List<Image> result = t.subList(0, 30);
+//          mLastImageDate = DateUtils.minesOneDayOfLastDate(result.get(result.size() - 1).getDate());
+          return result;
+        })
+        .doAfterSuccess(t -> mLastImageDate = DateUtils.minesOneDayOfLastDate(t.get(t.size() - 1).getDate()))
+        .toObservable()
+        .subscribe(this::handleImageListResults, this::handleImageListError);
   }
+
+  private void handleImageListResults(List<Image> images) {
+    if (images != null && images.size() != 0) {
+      post(images);
+    } else {
+      post(EventType.IMAGE_LIST_EVENT_FAILURE, "The respone is empty!");
+    }
+  }
+
+  private void handleImageListError(Throwable throwable) {
+    post(EventType.IMAGE_LIST_EVENT_FAILURE, throwable.getMessage());
+  }
+
 
   //BuildConfig.NASA_API_KEY
   //"DEMO_KEY"
   @Override
   public void getRandomImage() {
-    Call<List<Image>> call = mApodClient.getApodService().getRandomImage("DEMO_KEY", 4);
+    /*Call<List<Image>> call = mApodClient.getApodService().getRandomImage("DEMO_KEY", 4);
     call.enqueue(new Callback<List<Image>>() {
       @Override
       public void onResponse(@NonNull Call<List<Image>> call,
@@ -108,7 +135,31 @@ public class ImageListRepositoryImpl implements ImageListRepository {
       public void onFailure(@NonNull Call<List<Image>> call, @NonNull Throwable t) {
         post(EventType.RANDOM_IMAGE_EVENT_FAILURE, t.getMessage());
       }
-    });
+    });*/
+    Observable<List<Image>> randomImageListObservable = mApodClient.getApodService()
+        .getRandomImage("DEMO_KEY", 4);
+    randomImageListObservable
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .map(Observable::fromIterable)
+        .flatMap(o -> o)
+        .filter(f -> f.getMediaType().equals("image"))
+        .toList()
+        .toObservable()
+        .subscribe(this::handleRandomImageResults, this::handleRandomImageRError);
+
+  }
+
+  private void handleRandomImageResults(List<Image> images) {
+    if (images != null && images.size() != 0) {
+      post(images.get(0));
+    } else {
+      getRandomImage();
+    }
+  }
+
+  private void handleRandomImageRError(Throwable throwable) {
+    post(EventType.RANDOM_IMAGE_EVENT_FAILURE, throwable.getMessage());
   }
 
   private void post(List<Image> images) {

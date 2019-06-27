@@ -30,11 +30,11 @@ dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:${rootProject.ext.androidxAppcompatVersion}"
-    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.androidxConstraintlayoutVersion}"
-    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.androidxRecyclerview}"
-    implementation "androidx.cardview:cardview:${rootProject.ext.androidxCardview}"
-    implementation "androidx.percentlayout:percentlayout:${rootProject.ext.androidxPercentlayoutVersion}"
     implementation "androidx.legacy:legacy-support-v4:${rootProject.ext.androidxLegacyVersion}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.androidxConstraintlayoutVersion}"
+    implementation "androidx.cardview:cardview:${rootProject.ext.androidxCardview}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.androidxRecyclerview}"
+    implementation "androidx.percentlayout:percentlayout:${rootProject.ext.androidxPercentlayoutVersion}"
 
     implementation "com.google.android.material:material:${rootProject.ext.googleMaterialVersion}"
 
@@ -47,6 +47,7 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
     implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.ext.retrofitVersion}"
 
     implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
 
